@@ -6,9 +6,9 @@ require 'uri/https'
 module Spacebunny
   class EndpointConnection
     DEFAULT_OPTIONS = {
-        scheme: 'http',
+        scheme: 'https',
         host: 'api.demo.spacebunny.io', #'https://api.spacebunny.io',
-        port: 80,
+        port: 443,
         api_version: '/v1',
         configs_path: {
             device: '/device_configurations',
