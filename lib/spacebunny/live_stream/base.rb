@@ -12,7 +12,7 @@ module Spacebunny
     class Base
       attr_accessor :api_endpoint, :auto_recover, :raise_on_error, :client, :secret, :host, :vhost, :live_streams
       attr_reader :log_to, :log_level, :logger, :custom_connection_configs, :auto_connection_configs,
-                  :connection_configs, :auto_configs
+                  :connection_configs, :auto_configs, :tls, :tls_cert, :tls_key, :tls_ca_certificates, :verify_peer
 
       def initialize(protocol, *args)
         @protocol = protocol
@@ -174,6 +174,7 @@ module Spacebunny
         {
             host: @auto_configs[:connection][:host],
             port: @auto_configs[:connection][:protocols][@protocol][:port],
+            ssl_port: @auto_configs[:connection][:protocols][@protocol][:ssl_port],
             vhost: @auto_configs[:connection][:vhost],
             client: @auto_configs[:connection][:client],
             secret: @auto_configs[:connection][:secret]
