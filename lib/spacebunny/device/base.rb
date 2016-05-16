@@ -12,7 +12,7 @@ module Spacebunny
     class Base
       attr_accessor :key, :api_endpoint, :auto_recover, :id, :name, :host, :secret, :vhost, :channels
       attr_reader :log_to, :log_level, :logger, :custom_connection_configs, :auto_connection_configs,
-                  :connection_configs, :auto_configs
+                  :connection_configs, :auto_configs, :tls, :tls_cert, :tls_key, :tls_ca_certificates, :verify_peer
 
       def initialize(protocol, *args)
         @protocol = protocol
@@ -114,7 +114,7 @@ module Spacebunny
           logger.warn <<-MSG
 
             You're going to publish on channel '#{name}', but it does not appear a configured channel.
-            If using auto-configuration (device's api-key) associate the channel to device '#{@auto_configs[:connection][:name]}'
+            If using auto-configuration (device-key) associate the channel to device '#{@auto_configs[:connection][:name]}'
             from web interface.
             If providing manual configuration, please specify channels list through the :channels option
             or through given setter, e.g. client.channels = [:first_channel, :second_channel, ... ])

@@ -93,25 +93,6 @@ module Spacebunny
         connection_configs[:vhost]
       end
 
-      def with_stream_check(name, &block)
-        unless res = live_streams.include?(name)
-          logger.warn <<-MSG
-
-            You're going to publish on stream '#{name}', but it does not appear a configured stream.
-            If using auto-configuration (device's api-key) associate the stream to device '#{@auto_configs[:connection][:name]}'
-            from web interface.
-            If providing manual configuration, please specify live_streams list through the :live_streams option
-            or through given setter, e.g. client.live_streams = [:first_stream, :second_stream, ... ])
-
-          MSG
-        end
-        if block_given?
-          yield
-        else
-          res
-        end
-      end
-
       private
 
       # @private

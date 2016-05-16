@@ -17,6 +17,7 @@ module Spacebunny
       def connect
         # 'Fix' attributes: start from common connection configs and adjust attributes to match what Bunny
         # wants as connection args
+
         connection_params = connection_configs.dup
         connection_params[:user] = connection_params.delete :device_id
         connection_params[:password] = connection_params.delete :secret
