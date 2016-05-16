@@ -17,3 +17,7 @@ require 'spacebunny/device/amqp'
 require 'spacebunny/live_stream/base'
 require 'spacebunny/live_stream/message'
 require 'spacebunny/live_stream/amqp'
+
+def path_to_resources(path)
+  File.join(File.dirname(File.expand_path(__FILE__)), path)
+end

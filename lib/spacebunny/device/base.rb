@@ -166,22 +166,20 @@ module Spacebunny
       end
 
       # @private
+      # Copy options to custom_connection_configs and normalize some of the attributes overwriting it
       def extract_custom_connection_configs_from(options)
+        @custom_connection_configs = options
         # Auto_recover from connection.close by default
-        if options[:connection]
-          @custom_connection_configs[:auto_recover] = options[:connection][:auto_recover] || true
-          @custom_connection_configs[:host] = options[:connection][:host]
-          @custom_connection_configs[:port] = options[:connection][:protocols][@protocol][:port]
-          @custom_connection_configs[:vhost] = options[:connection][:vhost]
-          @custom_connection_configs[:device_id] = options[:connection][:device_id]
-          @custom_connection_configs[:device_name] = options[:connection][:device_name],
-          @custom_connection_configs[:secret] = options[:connection][:secret]
+        @custom_connection_configs[:auto_recover] = @custom_connection_configs.delete(:auto_recover) || true
+        @custom_connection_configs[:host] = @custom_connection_configs.delete :host
+        if @custom_connection_configs[:protocols] && custom_connection_configs[:protocols][@protocol]
+          @custom_connection_configs[:port] = @custom_connection_configs[:protocols][@protocol].delete :port
+          @custom_connection_configs[:ssl_port] = @custom_connection_configs[:protocols][@protocol].delete :ssl_port
         end
-      end
-
-      # @private
-      def merge_device_connection(configs)
-        configs.merge custom_connection_configs
+        @custom_connection_configs[:vhost] = @custom_connection_configs.delete :vhost
+        @custom_connection_configs[:device_id] = @custom_connection_configs.delete :device_id
+        @custom_connection_configs[:device_name] = @custom_connection_configs.delete :device_name
+        @custom_connection_configs[:secret] = @custom_connection_configs.delete :secret
       end
 
       # @private
@@ -204,6 +202,7 @@ module Spacebunny
         {
             host: @auto_configs[:connection][:host],
             port: @auto_configs[:connection][:protocols][@protocol][:port],
+            ssl_port: @auto_configs[:connection][:protocols][@protocol][:ssl_port],
             vhost: @auto_configs[:connection][:vhost],
             device_id: @auto_configs[:connection][:device_id],
             device_name: @auto_configs[:connection][:device_name],

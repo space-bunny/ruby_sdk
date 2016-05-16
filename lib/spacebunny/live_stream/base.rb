@@ -144,11 +144,6 @@ module Spacebunny
       end
 
       # @private
-      def merge_device_connection(configs)
-        configs.merge custom_connection_configs
-      end
-
-      # @private
       def check_and_add_live_streams(chs)
         @live_streams = [] unless @live_streams
         return unless chs

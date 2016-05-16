@@ -22,6 +22,7 @@ module Spacebunny
         connection_params[:user] = connection_params.delete :device_id
         connection_params[:password] = connection_params.delete :secret
         connection_params[:recover_from_connection_close] = connection_params.delete :auto_recover
+        connection_params[:log_level] = connection_params.delete(:log_level) || ::Logger::WARN
 
         # Re-create client every time connect is called
         @client = Bunny.new(connection_params)
@@ -106,6 +107,7 @@ module Spacebunny
       end
 
       def check_client
+        puts client.connected?
         raise ClientNotConnected, 'Client not connected. Did you call client.connect?' unless client_connected?
       end
 
