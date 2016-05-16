@@ -56,6 +56,7 @@ module Spacebunny
       end
 
       def connect
+        logger.warn "connect method must be implemented on class responsibile to handle protocol '#{@protocol}'"
       end
 
       def connection_options=(options)
