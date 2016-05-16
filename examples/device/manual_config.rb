@@ -15,7 +15,7 @@ require 'json'
 # Replace with device's Ruby configs hash copied from web inteface
 configs = {
     :connection => {
-        :host        => "demo.spacebunny.io",
+        :host        => "api.demo.spacebunny.io",
         :protocols   => {
             :amqp      => {
                 :port => 5672

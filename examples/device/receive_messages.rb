@@ -57,7 +57,7 @@ end
 # end
 
 # on_receive method's options:
-# 'wait' (default true) causes the script to wait forever on the receive block. This is useful
+# 'wait' (default false) causes the script to wait forever on the receive block. This is useful
 # for 'read-only' scripts like workers or similar.
 # 'ack' option can have two values: :manual (default) or :auto. When :manual you are responsible to ack the messages,
 # for instance:
