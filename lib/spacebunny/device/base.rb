@@ -10,7 +10,7 @@ module Spacebunny
     end
 
     class Base
-      attr_accessor :key, :api_endpoint, :auto_recover, :id, :name, :host, :secret, :vhost, :channels
+      attr_accessor :key, :api_endpoint, :auto_recover, :raise_on_error, :id, :name, :host, :secret, :vhost, :channels
       attr_reader :log_to, :log_level, :logger, :custom_connection_configs, :auto_connection_configs,
                   :connection_configs, :auto_configs, :tls, :tls_cert, :tls_key, :tls_ca_certificates, :verify_peer
 
@@ -27,6 +27,7 @@ module Spacebunny
         extract_custom_connection_configs_from options
         set_channels options[:channels]
 
+        @raise_on_error = options[:raise_on_error]
         @log_to = options[:log_to] || STDOUT
         @log_level = options[:log_level] || ::Logger::WARN
         @logger = options[:logger] || build_logger

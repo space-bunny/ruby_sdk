@@ -87,7 +87,14 @@ module Spacebunny
 
   class ClientNotConnected < Exception
     def initialize(message = nil)
-      message = message || 'Client not connected!'
+      message = message || 'Client not connected! Check internet connection'
+      super(message)
+    end
+  end
+
+  class ClientNotSetup < Exception
+    def initialize(message = nil)
+      message = message || "'Client not setup. Did you call 'connect'?'"
       super(message)
     end
   end
