@@ -21,6 +21,7 @@ module Spacebunny
         connection_params[:user] = connection_params.delete :client
         connection_params[:password] = connection_params.delete :secret
         connection_params[:recover_from_connection_close] = connection_params.delete :auto_recover
+        connection_params[:log_level] = connection_params.delete(:log_level) || ::Logger::ERROR
 
         # Re-create client every time connect is called
         @client = Bunny.new(connection_params)
@@ -28,7 +29,7 @@ module Spacebunny
       end
 
       def channel_from_name(name)
-        # In @built_channels ci sono in realtà gli exchange!
+        # In @built_channels in fact we have exchanges
         with_channel_check name do
           @built_exchanges[name]
         end

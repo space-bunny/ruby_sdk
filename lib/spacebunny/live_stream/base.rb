@@ -10,7 +10,7 @@ module Spacebunny
     end
 
     class Base
-      attr_accessor :api_endpoint, :auto_recover, :client, :secret, :host, :vhost, :live_streams
+      attr_accessor :api_endpoint, :auto_recover, :raise_on_error, :client, :secret, :host, :vhost, :live_streams
       attr_reader :log_to, :log_level, :logger, :custom_connection_configs, :auto_connection_configs,
                   :connection_configs, :auto_configs
 
@@ -27,6 +27,7 @@ module Spacebunny
         extract_custom_connection_configs_from options
         set_live_streams options[:live_streams]
 
+        @raise_on_error = options[:raise_on_error]
         @log_to = options[:log_to] || STDOUT
         @log_level = options[:log_level] || ::Logger::WARN
         @logger = options[:logger] || build_logger
@@ -55,6 +56,7 @@ module Spacebunny
       end
 
       def connect
+        logger.warn "connect method must be implemented on class responsibile to handle protocol '#{@protocol}'"
       end
 
       def connection_options=(options)
@@ -132,15 +134,17 @@ module Spacebunny
 
       # @private
       def extract_custom_connection_configs_from(options)
+        @custom_connection_configs = options
         # Auto_recover from connection.close by default
-        if options[:connection]
-          @custom_connection_configs[:auto_recover] = options[:connection][:auto_recover] || true
-          @custom_connection_configs[:host] = options[:connection][:host]
-          @custom_connection_configs[:port] = options[:connection][:device][@protocol][:port]
-          @custom_connection_configs[:vhost] = options[:connection][:vhost]
-          @custom_connection_configs[:client] = options[:connection][:client]
-          @custom_connection_configs[:secret] = options[:connection][:secret]
+        @custom_connection_configs[:auto_recover] = @custom_connection_configs.delete(:auto_recover) || true
+        @custom_connection_configs[:host] = @custom_connection_configs.delete :host
+        if @custom_connection_configs[:protocols] && custom_connection_configs[:protocols][@protocol]
+          @custom_connection_configs[:port] = @custom_connection_configs[:protocols][@protocol].delete :port
+          @custom_connection_configs[:ssl_port] = @custom_connection_configs[:protocols][@protocol].delete :ssl_port
         end
+        @custom_connection_configs[:vhost] = @custom_connection_configs.delete :vhost
+        @custom_connection_configs[:client] = @custom_connection_configs.delete :client
+        @custom_connection_configs[:secret] = @custom_connection_configs.delete :secret
       end
 
       # @private
