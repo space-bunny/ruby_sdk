@@ -32,14 +32,14 @@ puts "Waiting for messages. Publish some from Space Bunny's web interface to try
 
 # Receiving messages is trivial:
 
-dev.on_receive(wait: true, ack: :auto) do |message|
+dev.inbox(wait: true, ack: :auto) do |message|
   puts "Received: #{message.payload}"
 end
 
-# A Ruby block must be supplied to the 'on_receive' method. It yields a Device::Message object containing
+# A Ruby block must be supplied to the 'inbox' method. It yields a Device::Message object containing
 # all the useful data:
 #
-# dev.on_receive do |message|
+# dev.inbox do |message|
 #   puts "payload: #{message.payload}"
 #
 #   # metadata that can be accessed as an Hash.
@@ -56,25 +56,25 @@ end
 #   puts "delivery_info: #{message.delivery_info}"
 # end
 
-# on_receive method's options:
+# inbox method's options:
 # 'wait' (default false) causes the script to wait forever on the receive block. This is useful
 # for 'read-only' scripts like workers or similar.
 # 'ack' option can have two values: :manual (default) or :auto. When :manual you are responsible to ack the messages,
 # for instance:
 #
-# dev.on_receive(block: true, ack: :manual) do |message|
+# dev.inbox(block: true, ack: :manual) do |message|
 #   puts "Received: #{message.payload}"
 #   message.ack
 # end
-# When 'ack' is :auto then the SDK will automatically ack the messages when the code provided in the on_receive block
-# has terminated execution. This behaviour is useful in cases in which the code executed inside the on_receive block
+# When 'ack' is :auto then the SDK will automatically ack the messages when the code provided in the inbox block
+# has terminated execution. This behaviour is useful in cases in which the code executed inside the inbox block
 # will always lead to an acked message (no matter the operations' result).
 # If your code can lead to errors and, for instance, the message must be reprocessed, you must use :manual ack
 # and manually call 'ack' as seen in the example above.
 # Call 'nack' in case the message needs to be reprocessed and it will remain on Space Bunny until successfully
 # acked. For instance:
 
-# dev.on_receive(block: true, ack: :manual) do |message|
+# dev.inbox(block: true, ack: :manual) do |message|
 #   puts message.payload
 #
 #   begin
@@ -101,7 +101,7 @@ end
 #                     requeued and made available for delivery again
 
 
-# Other 'on_receive' options:
+# Other 'inbox' options:
 # 'discard_from_api' (default false) causes the SDK to filter out messages published through APIs (or WEB UI) or
 # generally sent directly through Space Bunny's platform.
 # 'discard_mine' (default false) causes the SKD to filter out auto-messages i.e. messages sent from this device

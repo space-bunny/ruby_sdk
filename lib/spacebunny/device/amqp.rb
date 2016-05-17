@@ -70,6 +70,7 @@ module Spacebunny
           end
         end
       end
+      alias_method :inbox, :on_receive
 
       def publish(channel_name, message, options = {})
         check_client
