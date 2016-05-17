@@ -1,16 +1,16 @@
 require 'spacebunny'
 require 'json'
 
-# Prerequisites: you have created a device through the Space Bunny's web interface. See our Getting Started [link]
-# for a quick introduction to Space Bunny's base concepts.
+# Prerequisites: you have created a device through the SpaceBunny's web interface. See our Getting Started [link]
+# for a quick introduction to SpaceBunny's base concepts.
 
-# Once everything is set up get your device's API key from Space Bunny's web application: on the web interface,
+# Once everything is set up get your device's API key from SpaceBunny's web application: on the web interface,
 # go to devices section and create or pick an existing device. Click on the 'SHOW CONFIGURATION' link, copy the API key
 # and substitute it here:
 
 key = 'your_awesome_device_key'
 
-# Let's instantiate a Space Bunny (AMQP by default) client, providing the device's API key, that's the fastest and simplest method
+# Let's instantiate a SpaceBunny (AMQP by default) client, providing the device's API key, that's the fastest and simplest method
 # to create a new client. If, for some reason, you need to customize the settings, take a look at
 # examples/manual_config.rb for an example of connection settings customization.
 
@@ -18,7 +18,7 @@ dev = Spacebunny::Device.new key
 
 # An equivalent method for providing the API key is through options: Spacebunny::Device.new(key: key)
 
-# We need to call 'connect' in order to open the communication with Space Bunny platform
+# We need to call 'connect' in order to open the communication with SpaceBunny platform
 
 dev.connect
 
@@ -28,7 +28,7 @@ dev.connect
 
 # RECEIVING MESSAGES
 
-puts "Waiting for messages. Publish some from Space Bunny's web interface to try this out:"
+puts "Waiting for messages. Publish some from SpaceBunny's web interface to try this out:"
 
 # Receiving messages is trivial:
 
@@ -71,7 +71,7 @@ end
 # will always lead to an acked message (no matter the operations' result).
 # If your code can lead to errors and, for instance, the message must be reprocessed, you must use :manual ack
 # and manually call 'ack' as seen in the example above.
-# Call 'nack' in case the message needs to be reprocessed and it will remain on Space Bunny until successfully
+# Call 'nack' in case the message needs to be reprocessed and it will remain on SpaceBunny until successfully
 # acked. For instance:
 
 # dev.inbox(block: true, ack: :manual) do |message|
@@ -97,13 +97,13 @@ end
 #   multiple: false   nack multiple messages at once. Nack all the messages up
 #                     to the current one
 #   requeue: false    requeue message. If false (default), the message will be
-#                     discarded by Space Bunny. If true message will made
+#                     discarded by SpaceBunny. If true message will made
 #                     requeued and made available for delivery again
 
 
 # Other 'inbox' options:
 # 'discard_from_api' (default false) causes the SDK to filter out messages published through APIs (or WEB UI) or
-# generally sent directly through Space Bunny's platform.
+# generally sent directly through SpaceBunny's platform.
 # 'discard_mine' (default false) causes the SKD to filter out auto-messages i.e. messages sent from this device
 # and, for some reason, returned to the sender. This can happen in some particular situation such as when using m2m
 # groups.

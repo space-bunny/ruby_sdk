@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/space-bunny/ruby_sdk.svg)](https://travis-ci.org/space-bunny/ruby_sdk)
 [![Gem Version](https://badge.fury.io/rb/spacebunny.svg)](https://badge.fury.io/rb/spacebunny)
 
-[Space Bunny](http://spacebunny.io) is the IoT platform that makes it easy for you and your devices to send and
+[SpaceBunny](http://spacebunny.io) is the IoT platform that makes it easy for you and your devices to send and
 exchange messages with a server or even with each other. You can store the data, receive timely event notifications,
 monitor live streams and remotely control your devices. Easy to use, and ready to scale at any time.
 
@@ -28,7 +28,7 @@ Or install it yourself as:
 
     $ gem install spacebunny
 
-After you have signed up for a [Space Bunny](http://spacebunny.io)'s account, follow the
+After you have signed up for a [SpaceBunny](http://spacebunny.io)'s account, follow the
 [Getting Started](http://getting_started_link) guide for a one minute introduction to the platform concepts
 and a super rapid setup.
 
@@ -43,7 +43,7 @@ providing the Device Key:
 dev = Spacebunny::Device.new 'device_key'
 ```
 
-the SDK will auto-configure, contacting [Space Bunny APIs](http://doc.spacebunny.io/api) endpoint, retrieving the
+the SDK will auto-configure, contacting [SpaceBunny APIs](http://doc.spacebunny.io/api) endpoint, retrieving the
 connection configurations and required parameters. Nothing remains but to connect:
 
 ```ruby
@@ -58,7 +58,7 @@ Ok, all set up! Let's publish some message:
 # We're assuming you have created a 'data' channel and you have enabled it for your device
 
 # Let's publish, for instance, some JSON. Payload can be everything you want,
-# Space Bunny does not impose any constraint on format or content.
+# SpaceBunny does not impose any constraint on format or content.
 
 require 'json'  # to convert our payload to JSON
 
@@ -80,7 +80,7 @@ end
 
 Let's check out that our data is really being sent by going to our web dashboard: navigate to devices, select the
 device and click on 'LIVE DATA'. Select the 'data' channel from the dropdown and click **Start**.
-Having published data as JSON allows Space Bunny's web UI to parse them and visualize a nice
+Having published data as JSON allows SpaceBunny's web UI to parse them and visualize a nice
 realtime graph: On the **Chart** tab write `temp` in the input field and press enter.
 You'll see the graph of the `temp` parameter being rendered. If you want to plot more parameters,
 just use a comma as separator e.g: temp, pressure, voltage
@@ -119,7 +119,7 @@ click on "Live Stream Keys" and pick or create one.
 live = Spacebunny::LiveStream.new client: 'live_stream_key_client', secret: 'live_stream_key_secret'
 ```
 
-Similarly to the Device client, the SDK will auto-configure itself, contacting [Space Bunny APIs](http://doc.spacebunny.io/api)
+Similarly to the Device client, the SDK will auto-configure itself, contacting [SpaceBunny APIs](http://doc.spacebunny.io/api)
 endpoint, retrieving the connection configurations and required parameters. Nothing remains but to connect:
 
 ```ruby

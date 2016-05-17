@@ -1,14 +1,14 @@
 require 'spacebunny'
 require 'json'
 
-# Prerequisites: you have created a device through the Space Bunny's web interface. You also have a 'data' channel (name
+# Prerequisites: you have created a device through the SpaceBunny's web interface. You also have a 'data' channel (name
 # is not mandatory, but we'll use this for our example). You have also enabled 'data' channel for the device. See our
-# Getting Started [link] for a quick introduction to Space Bunny's base concepts.
+# Getting Started [link] for a quick introduction to SpaceBunny's base concepts.
 
-# If for some reason or use case it's not possible or desirable to use auto-configuration, Space Bunny's Ruby SDK
+# If for some reason or use case it's not possible or desirable to use auto-configuration, SpaceBunny's Ruby SDK
 # permits to manually configure the connection with various methods.
 
-# First of all go to Space Bunny's web interface, go to the devices section and create or pick an existing device.
+# First of all go to SpaceBunny's web interface, go to the devices section and create or pick an existing device.
 # Click on the 'SHOW CONFIGURATION' link and, from the 'Full configuration' section, copy the configuration from the
 # "Ruby" section and customize it to your needs.
 

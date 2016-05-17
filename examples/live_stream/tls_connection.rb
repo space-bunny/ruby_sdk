@@ -1,11 +1,11 @@
 require 'spacebunny'
 
 # Prerequisites:
-# - You have created a Live Stream named 'live_data' through the Space Bunny's web interface.
+# - You have created a Live Stream named 'live_data' through the SpaceBunny's web interface.
 # - The Live Stream has, as sources, two devices' 'data' channel.
-# See our Getting Started [link] for a quick introduction to Space Bunny's base concepts.
+# See our Getting Started [link] for a quick introduction to SpaceBunny's base concepts.
 
-# Once everything is set up go to Users section on Space Bunny Web UI, select one user and click on 'Access Keys'
+# Once everything is set up go to Users section on SpaceBunny Web UI, select one user and click on 'Access Keys'
 # Pick or create one access key and copy 'Client' and 'Secret'.
 
 client = 'live_stream_key_client'
