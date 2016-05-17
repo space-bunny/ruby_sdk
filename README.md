@@ -3,7 +3,7 @@
 </p>
 
 [![Build Status](https://travis-ci.org/space-bunny/ruby_sdk.svg)](https://travis-ci.org/space-bunny/ruby_sdk)
-[![Gem Version](https://badge.fury.io/rb/space_bunny.svg)](https://badge.fury.io/rb/spacebunny)
+[![Gem Version](https://badge.fury.io/rb/spacebunny.svg)](https://badge.fury.io/rb/spacebunny)
 
 [Space Bunny](http://spacebunny.io) is the IoT platform that makes it easy for you and your devices to send and
 exchange messages with a server or even with each other. You can store the data, receive timely event notifications,
