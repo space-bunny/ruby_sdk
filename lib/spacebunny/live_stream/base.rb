@@ -10,9 +10,9 @@ module Spacebunny
     end
 
     class Base
-      attr_accessor :api_endpoint, :auto_recover, :client, :secret, :host, :vhost, :live_streams
+      attr_accessor :api_endpoint, :auto_recover, :raise_on_error, :client, :secret, :host, :vhost, :live_streams
       attr_reader :log_to, :log_level, :logger, :custom_connection_configs, :auto_connection_configs,
-                  :connection_configs, :auto_configs
+                  :connection_configs, :auto_configs, :tls, :tls_cert, :tls_key, :tls_ca_certificates, :verify_peer
 
       def initialize(protocol, *args)
         @protocol = protocol
@@ -27,6 +27,7 @@ module Spacebunny
         extract_custom_connection_configs_from options
         set_live_streams options[:live_streams]
 
+        @raise_on_error = options[:raise_on_error]
         @log_to = options[:log_to] || STDOUT
         @log_level = options[:log_level] || ::Logger::WARN
         @logger = options[:logger] || build_logger
@@ -55,6 +56,7 @@ module Spacebunny
       end
 
       def connect
+        logger.warn "connect method must be implemented on class responsibile to handle protocol '#{@protocol}'"
       end
 
       def connection_options=(options)
@@ -91,25 +93,6 @@ module Spacebunny
 
       def vhost
         connection_configs[:vhost]
-      end
-
-      def with_stream_check(name, &block)
-        unless res = live_streams.include?(name)
-          logger.warn <<-MSG
-
-            You're going to publish on stream '#{name}', but it does not appear a configured stream.
-            If using auto-configuration (device's api-key) associate the stream to device '#{@auto_configs[:connection][:name]}'
-            from web interface.
-            If providing manual configuration, please specify live_streams list through the :live_streams option
-            or through given setter, e.g. client.live_streams = [:first_stream, :second_stream, ... ])
-
-          MSG
-        end
-        if block_given?
-          yield
-        else
-          res
-        end
       end
 
       private
@@ -151,20 +134,17 @@ module Spacebunny
 
       # @private
       def extract_custom_connection_configs_from(options)
+        @custom_connection_configs = options
         # Auto_recover from connection.close by default
-        if options[:connection]
-          @custom_connection_configs[:auto_recover] = options[:connection][:auto_recover] || true
-          @custom_connection_configs[:host] = options[:connection][:host]
-          @custom_connection_configs[:port] = options[:connection][:device][@protocol][:port]
-          @custom_connection_configs[:vhost] = options[:connection][:vhost]
-          @custom_connection_configs[:client] = options[:connection][:client]
-          @custom_connection_configs[:secret] = options[:connection][:secret]
+        @custom_connection_configs[:auto_recover] = @custom_connection_configs.delete(:auto_recover) || true
+        @custom_connection_configs[:host] = @custom_connection_configs.delete :host
+        if @custom_connection_configs[:protocols] && custom_connection_configs[:protocols][@protocol]
+          @custom_connection_configs[:port] = @custom_connection_configs[:protocols][@protocol].delete :port
+          @custom_connection_configs[:ssl_port] = @custom_connection_configs[:protocols][@protocol].delete :ssl_port
         end
-      end
-
-      # @private
-      def merge_device_connection(configs)
-        configs.merge custom_connection_configs
+        @custom_connection_configs[:vhost] = @custom_connection_configs.delete :vhost
+        @custom_connection_configs[:client] = @custom_connection_configs.delete :client
+        @custom_connection_configs[:secret] = @custom_connection_configs.delete :secret
       end
 
       # @private
@@ -194,6 +174,7 @@ module Spacebunny
         {
             host: @auto_configs[:connection][:host],
             port: @auto_configs[:connection][:protocols][@protocol][:port],
+            ssl_port: @auto_configs[:connection][:protocols][@protocol][:ssl_port],
             vhost: @auto_configs[:connection][:vhost],
             client: @auto_configs[:connection][:client],
             secret: @auto_configs[:connection][:secret]

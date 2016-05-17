@@ -9,13 +9,13 @@ require 'json'
 # go to devices section and create or pick an existing device. Click on the 'SHOW CONFIGURATION' link, copy the API key
 # and substitute it here:
 
-key = 'your_awesome_device_key'
+device_key = 'your_awesome_device_key'
 
 # Let's instantiate a Space Bunny client, providing the device's API key, that's the fastest and simplest method
 # to create a new client. If, for some reason, you need to customize the settings, take a look at
 # examples/manual_config.rb for an example of connection settings customization.
 
-dev = Spacebunny::Device.new key
+dev = Spacebunny::Device.new device_key
 
 # An equivalent method for providing the API key is through options: Spacebunny::Device.new(key: key)
 

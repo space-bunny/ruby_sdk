@@ -20,7 +20,9 @@ module Spacebunny
         connection_params = connection_configs.dup
         connection_params[:user] = connection_params.delete :device_id
         connection_params[:password] = connection_params.delete :secret
+        connection_params[:port] = connection_params.delete(:ssl_port) if connection_params[:tls]
         connection_params[:recover_from_connection_close] = connection_params.delete :auto_recover
+        connection_params[:log_level] = connection_params.delete(:log_level) || ::Logger::ERROR
 
         # Re-create client every time connect is called
         @client = Bunny.new(connection_params)
@@ -28,6 +30,7 @@ module Spacebunny
       end
 
       def channel_from_name(name)
+        # In @built_channels in fact we have exchanges
         with_channel_check name do
           @built_exchanges[name]
         end
@@ -47,7 +50,7 @@ module Spacebunny
         unless block_given?
           raise BlockRequired
         end
-        blocking = options.fetch :wait, true
+        blocking = options.fetch :wait, false
         to_ack, auto_ack = parse_ack options.fetch(:ack, :manual)
 
         input_queue.subscribe(block: blocking, manual_ack: to_ack) do |delivery_info, metadata, payload|
@@ -67,6 +70,7 @@ module Spacebunny
           end
         end
       end
+      alias_method :inbox, :on_receive
 
       def publish(channel_name, message, options = {})
         check_client
@@ -104,12 +108,18 @@ module Spacebunny
         options.merge({routing_key: "#{id}.#{channel}" })
       end
 
+      # Check if client has been prepared.
       def check_client
-        raise ClientNotConnected, 'Client not connected. Did you call client.connect?' unless client_connected?
-      end
-
-      def client_connected?
-        client && client.status.eql?(:open)
+        unless client
+          raise ClientNotSetup
+        end
+        unless client.connected?
+          if raise_on_error
+            raise ClientNotConnected
+          else
+            @logger.error 'Client not connected! Check internet connection'
+          end
+        end
       end
 
       def create_channel(name, options = {})

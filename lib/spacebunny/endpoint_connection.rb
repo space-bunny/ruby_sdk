@@ -12,7 +12,7 @@ module Spacebunny
         api_version: '/v1',
         configs_path: {
             device: '/device_configurations',
-            live_stream: '/access_key_configurations'
+            live_stream: '/live_stream_key_configurations'
         }
     }.freeze
 
@@ -57,15 +57,14 @@ module Spacebunny
 
     # Contact APIs endpoint to retrieve configs
     def fetch
-      uri = nil
-      case scheme
-        when 'http'
-          uri = URI::HTTP.build host: host, port: port, path: "#{api_version}#{configs_path}"
-        when 'https'
-          uri = URI::HTTPS.build host: host, port: port, path: "#{api_version}#{configs_path}"
-      end
+      uri_builder = case scheme
+                      when 'http'
+                        URI::HTTP
+                      when 'https'
+                        URI::HTTPS
+                    end
 
-      unless uri
+      unless uri = uri_builder.build(host: host, port: port, path: "#{api_version}#{configs_path}")
         raise SchemeNotValid.new(scheme)
       end
 

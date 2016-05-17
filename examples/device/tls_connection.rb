@@ -12,10 +12,10 @@ require 'json'
 device_key = 'your_awesome_device_key'
 
 # Let's instantiate a Space Bunny client, providing the device's API key, that's the fastest and simplest method
-# to create a new client. If, for some reason, you need to customize the settings, take a look at
-# examples/manual_config.rb for an example of connection settings customization.
+# to create a new client.
+# Provide `tls: true` to use instantiate a tls-secured connection
 
-dev = Spacebunny::Device.new key
+dev = Spacebunny::Device.new device_key, tls: true
 
 # An equivalent method for providing the API key is through options: Spacebunny::Device.new(key: key)
 
@@ -26,7 +26,7 @@ dev.connect
 # At this point the SDK is auto-configured and ready to use.
 # Configurations are automatically lazy-fetched by the SDK itself when calling 'connect'.
 
-# PUBLISHING MESSAGES WITH CONFIRM
+# PUBLISHING MESSAGES
 
 # As said in the prerequisites, we'll assume that 'data' channel is enabled for your device.
 # If you're in doubt, please check that this is true through Space Bunny's web interface, by clicking on the device
@@ -38,17 +38,17 @@ dev.connect
 
 # Publish one message every second for a minute.
 count = 0
-5.times do
+60.times do
   # Generate some random data
   payload = {
       count: count,
-      greetings: 'Hello, World!',
+      greetings: "Hello from #{dev.name}!",
       temp: rand(20.0..25.0),
       foo: rand(100..200)
   }.to_json
 
   # Hint: the channel name can also be a string e.g: 'data'
-  dev.publish :data, payload, with_confirm: true
+  dev.publish :data, payload
 
   # 'publish' takes two mandatory arguments (channel's name and payload) and a variety of options: one of these options is
   # the 'with_confirm' flag: when set to true this requires Space Bunny's platform to confirm the receipt of the message.
@@ -62,24 +62,4 @@ count = 0
   sleep 1
   # Update counter
   count += 1
-end
-
-# Wait for publish confirmations: wait for Space Bunny to confirm that all published messages have been
-# accepted.
-result = dev.wait_for_publish_confirms
-
-# 'wait_for_publish_confirms' waits for every message published, regardless the channel, blocking execution until
-# every confirm (or nack) has been received. 'wait_for_publish_confirms' returns an Hash whose keys are the channels'
-# names on which you have published some message.
-# For instance:
-
-result.each do |channel, status|
-  # If result is false, some message has been nacked. A message may be nacked by Space Bunny's platform if, for some
-  # reason, it cannot take responsibility for the message
-  unless status[:all_confirmed]
-    # do something with nacked messages
-    status[:nacked_set].each do |nacked_message|
-      # do something with nacked message
-    end
-  end
 end
