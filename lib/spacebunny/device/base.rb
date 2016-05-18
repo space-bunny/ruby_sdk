@@ -176,7 +176,7 @@ module Spacebunny
         @custom_connection_configs[:host] = @custom_connection_configs.delete :host
         if @custom_connection_configs[:protocols] && custom_connection_configs[:protocols][@protocol]
           @custom_connection_configs[:port] = @custom_connection_configs[:protocols][@protocol].delete :port
-          @custom_connection_configs[:ssl_port] = @custom_connection_configs[:protocols][@protocol].delete :ssl_port
+          @custom_connection_configs[:tls_port] = @custom_connection_configs[:protocols][@protocol].delete :tls_port
         end
         @custom_connection_configs[:vhost] = @custom_connection_configs.delete :vhost
         @custom_connection_configs[:device_id] = @custom_connection_configs.delete :device_id
@@ -204,7 +204,7 @@ module Spacebunny
         {
             host: @auto_configs[:connection][:host],
             port: @auto_configs[:connection][:protocols][@protocol][:port],
-            ssl_port: @auto_configs[:connection][:protocols][@protocol][:ssl_port],
+            tls_port: @auto_configs[:connection][:protocols][@protocol][:tls_port],
             vhost: @auto_configs[:connection][:vhost],
             device_id: @auto_configs[:connection][:device_id],
             device_name: @auto_configs[:connection][:device_name],
