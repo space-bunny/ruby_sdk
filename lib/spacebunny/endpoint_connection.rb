@@ -7,7 +7,7 @@ module Spacebunny
   class EndpointConnection
     DEFAULT_OPTIONS = {
         scheme: 'https',
-        host: 'api.demo.spacebunny.io', #'https://api.spacebunny.io',
+        host: 'api.spacebunny.io',
         port: 443,
         api_version: '/v1',
         configs_path: {
