@@ -57,7 +57,7 @@ module Spacebunny
 
     # Contact APIs endpoint to retrieve configs
     def fetch
-      uri_builder = case scheme
+      uri_builder = case scheme.to_s
                       when 'http'
                         URI::HTTP
                       when 'https'
