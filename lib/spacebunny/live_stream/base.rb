@@ -54,6 +54,7 @@ module Spacebunny
         check_connection_configs
         @connection_configs
       end
+      alias_method :auto_configure, :connection_configs
 
       def connect
         logger.warn "connect method must be implemented on class responsibile to handle protocol '#{@protocol}'"
@@ -83,16 +84,33 @@ module Spacebunny
         connection_configs[:auto_recover]
       end
 
+      def auto_recover=(auto_recover)
+        @connection_configs[:auto_recover] = auto_recover
+      end
+
       def host
         connection_configs[:host]
+      end
+
+      def host=(host)
+        @connection_configs[:host] = host
       end
 
       def secret
         connection_configs[:secret]
       end
 
+      def secret=(secret)
+        @connection_configs[:secret] = secret
+      end
+
       def vhost
         connection_configs[:vhost]
+      end
+      alias_method :organization_id, :vhost
+
+      def vhost=(vhost)
+        @connection_configs[:secret] = secret
       end
 
       private
