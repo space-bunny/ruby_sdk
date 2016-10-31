@@ -138,11 +138,11 @@ module Spacebunny
       end
 
       def with_channel_check(name)
-        unless res = channels.include?(name)
+        unless res = channels.include?(name.to_sym)
           logger.warn <<-MSG
 
             You're going to publish on channel '#{name}', but it does not appear a configured channel.
-            If using auto-configuration (device-key) associate the channel to device '#{@auto_configs[:connection][:name]}'
+            If using auto-configuration (device-key) associate the channel to device '#{connection_configs[:device_name]}'
             from web interface.
             If providing manual configuration, please specify channels list through the :channels option
             or through given setter, e.g. client.channels = [:first_channel, :second_channel, ... ])
