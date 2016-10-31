@@ -69,8 +69,9 @@ module Spacebunny
       end
 
       response = contact_endpoint_with uri
-      content = JSON.parse(response, symbolize_names: true) rescue nil
+      content = JSON.parse(response.to_s, symbolize_names: true) rescue nil
       status = response.status
+
       if status != 200
         if content
           phrase = "Auto-configuration failed:  #{response.status} => #{content[:error]}"
@@ -86,6 +87,7 @@ module Spacebunny
         end
         raise EndpointError, phrase
       end
+
       content
     end
 
