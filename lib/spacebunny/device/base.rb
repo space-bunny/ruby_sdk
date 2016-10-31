@@ -138,7 +138,7 @@ module Spacebunny
       end
 
       def with_channel_check(name)
-        unless res = channels.include?(name)
+        unless res = channels.include?(name.to_sym)
           logger.warn <<-MSG
 
             You're going to publish on channel '#{name}', but it does not appear a configured channel.
