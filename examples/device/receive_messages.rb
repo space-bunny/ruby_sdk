@@ -1,5 +1,4 @@
 require 'spacebunny'
-require 'json'
 
 # Prerequisites: you have created a device through the SpaceBunny's web interface. See our Getting Started [link]
 # for a quick introduction to SpaceBunny's base concepts.
