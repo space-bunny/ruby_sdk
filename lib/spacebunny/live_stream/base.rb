@@ -10,7 +10,7 @@ module Spacebunny
     end
 
     class Base
-      attr_accessor :api_endpoint, :auto_recover, :raise_on_error, :client, :secret, :host, :vhost, :live_streams
+      attr_accessor :api_endpoint, :raise_on_error, :client, :secret, :host, :vhost, :live_streams
       attr_reader :log_to, :log_level, :logger, :custom_connection_configs, :auto_connection_configs,
                   :connection_configs, :auto_configs, :tls, :tls_cert, :tls_key, :tls_ca_certificates, :verify_peer
 
@@ -80,14 +80,6 @@ module Spacebunny
         @client && @secret
       end
 
-      def auto_recover
-        connection_configs[:auto_recover]
-      end
-
-      def auto_recover=(auto_recover)
-        @connection_configs[:auto_recover] = auto_recover
-      end
-
       def host
         connection_configs[:host]
       end
@@ -154,7 +146,6 @@ module Spacebunny
       def extract_custom_connection_configs_from(options)
         @custom_connection_configs = options
         # Auto_recover from connection.close by default
-        @custom_connection_configs[:auto_recover] = @custom_connection_configs.delete(:auto_recover) || true
         @custom_connection_configs[:host] = @custom_connection_configs.delete :host
         if @custom_connection_configs[:protocols] && custom_connection_configs[:protocols][@protocol]
           @custom_connection_configs[:port] = @custom_connection_configs[:protocols][@protocol].delete :port

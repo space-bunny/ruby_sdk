@@ -9,7 +9,6 @@ describe Spacebunny::Device::Base do
 
     it { should have_attr_accessor :key }
     it { should have_attr_accessor :api_endpoint }
-    it { should have_attr_accessor :auto_recover }
     it { should have_attr_accessor :id }
     it { should have_attr_accessor :name }
     it { should have_attr_accessor :host }

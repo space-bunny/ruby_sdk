@@ -9,7 +9,6 @@ describe Spacebunny::LiveStream::Base do
     subject(:live_stream_class) { Spacebunny::LiveStream::Base.new protocol, client: client, secret: secret }
 
     it { should have_attr_accessor :api_endpoint }
-    it { should have_attr_accessor :auto_recover }
     it { should have_attr_accessor :client }
     it { should have_attr_accessor :secret }
     it { should have_attr_accessor :host }
