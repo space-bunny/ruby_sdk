@@ -10,7 +10,7 @@ module Spacebunny
     end
 
     class Base
-      attr_accessor :key, :api_endpoint, :auto_recover, :raise_on_error, :id, :name, :host, :secret, :vhost, :channels
+      attr_accessor :key, :api_endpoint, :raise_on_error, :id, :name, :host, :secret, :vhost, :channels
       attr_reader :log_to, :log_level, :logger, :custom_connection_configs, :auto_connection_configs,
                   :connection_configs, :auto_configs, :tls, :tls_cert, :tls_key, :tls_ca_certificates, :verify_peer
 
@@ -79,14 +79,6 @@ module Spacebunny
       # Stub method: must be implemented on the class responsible to handle the protocol
       def on_receive(options = {}, &block)
         logger.warn "on_receive method must be implemented on class responsibile to handle protocol '#{@protocol}'"
-      end
-
-      def auto_recover
-        connection_configs[:auto_recover]
-      end
-
-      def auto_recover=(auto_recover)
-        @connection_configs[:auto_recover] = auto_recover
       end
 
       def id
@@ -198,7 +190,6 @@ module Spacebunny
       def extract_custom_connection_configs_from(options)
         @custom_connection_configs = options
         # Auto_recover from connection.close by default
-        @custom_connection_configs[:auto_recover] = @custom_connection_configs.delete(:auto_recover) || true
         @custom_connection_configs[:host] = @custom_connection_configs.delete :host
         if @custom_connection_configs[:protocols] && custom_connection_configs[:protocols][@protocol]
           @custom_connection_configs[:port] = @custom_connection_configs[:protocols][@protocol].delete :port
