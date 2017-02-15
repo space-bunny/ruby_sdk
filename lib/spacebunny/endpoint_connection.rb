@@ -17,6 +17,7 @@ module Spacebunny
     }.freeze
 
     attr_accessor :scheme, :host, :port, :api_version, :configs_path
+    attr_reader :logger
 
     def initialize(options = {})
       unless options.is_a? Hash
@@ -34,6 +35,7 @@ module Spacebunny
       @port = options[:port]
       @api_version = options[:api_version]
       @configs_path = options[:configs_path]
+      @logger = options.fetch :logger
     end
 
     def configs
@@ -114,7 +116,7 @@ module Spacebunny
         request.get(uri.to_s)
       rescue => e
         logger.error e.message
-        logger.error e.backtrace.join "\n"
+        logger.error e.backtrace.join("\n")
         raise EndPointNotReachable
       end
     end

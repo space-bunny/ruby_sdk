@@ -74,7 +74,7 @@ result = dev.wait_for_publish_confirms
 # For instance:
 
 result.each do |channel, status|
-  # If result is false, some message has been nacked. A message may be nacked by SpaceBunny's platform if, for some
+  # If status[:all_confirmed] is false, some message has been nacked for the channel. A message may be nacked by SpaceBunny's platform if, for some
   # reason, it cannot take responsibility for the message
   unless status[:all_confirmed]
     # do something with nacked messages

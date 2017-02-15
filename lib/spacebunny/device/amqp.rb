@@ -37,7 +37,7 @@ module Spacebunny
 
       def disconnect
         super
-        client.stop
+        client.stop if client
       end
 
       def input_channel

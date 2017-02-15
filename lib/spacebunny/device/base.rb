@@ -44,7 +44,7 @@ module Spacebunny
         return @connection_configs if @connection_configs
         if auto_configure?
          # If key is specified, retrieve configs from APIs endpoint
-          @auto_configs = EndpointConnection.new(@api_endpoint.merge(key: @key)).configs
+          @auto_configs = EndpointConnection.new(@api_endpoint.merge(key: @key, logger: logger)).configs
           normalize_and_add_channels @auto_configs[:channels]
           @auto_connection_configs = normalize_auto_connection_configs
         end
