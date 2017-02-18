@@ -36,7 +36,6 @@ module Spacebunny
       @api_version = options[:api_version]
       @configs_path = options[:configs_path]
       @logger = options.fetch :logger
-      puts logger.inspect
     end
 
     def configs
@@ -120,10 +119,6 @@ module Spacebunny
         logger.error e.backtrace.join("\n")
         raise EndPointNotReachable
       end
-    end
-
-    def logger
-      Spacebunny.logger
     end
 
     def merge_with_default(options)
