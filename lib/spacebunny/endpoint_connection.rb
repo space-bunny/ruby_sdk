@@ -36,6 +36,7 @@ module Spacebunny
       @api_version = options[:api_version]
       @configs_path = options[:configs_path]
       @logger = options.fetch :logger
+      puts logger.inspect
     end
 
     def configs
