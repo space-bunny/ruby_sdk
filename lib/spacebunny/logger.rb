@@ -13,7 +13,6 @@ module Spacebunny
         case a
           when String
             # This is a file path
-            puts File.open(a, 'a+').inspect
             @streams << File.open(a, 'a+')
           else
             @streams << a

@@ -44,7 +44,10 @@ module Spacebunny
         return @connection_configs if @connection_configs
         if auto_configure?
          # If key is specified, retrieve configs from APIs endpoint
-          @auto_configs = EndpointConnection.new(@api_endpoint.merge(client: @client, secret: @secret)).configs
+          @auto_configs = EndpointConnection.new(@api_endpoint.merge(
+              client: @client,
+              secret: @secret,
+              logger: logger)).configs
           check_and_add_live_streams @auto_configs[:live_streams]
           @auto_connection_configs = normalize_auto_connection_configs
         end
