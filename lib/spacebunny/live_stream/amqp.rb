@@ -7,11 +7,10 @@ module Spacebunny
       DEFAULT_EXCHANGE_OPTIONS = { passive: true }
       ACK_TYPES = [:manual, :auto]
 
-      attr_reader :built_live_streams, :client
+      attr_reader :client
 
       def initialize(*args)
         super(:amqp, *args)
-        @built_live_streams = {}
       end
 
       def connect
@@ -26,18 +25,13 @@ module Spacebunny
         # Re-create client every time connect is called
         @client = Bunny.new(connection_params)
         @client.start
-      end
-
-      def channel_from_name(name)
-        # In @built_channels in fact we have exchanges
-        with_channel_check name do
-          @built_exchanges[name]
-        end
+        logger.info 'Connected to SpaceBunny'
       end
 
       def disconnect
         super
-        client.stop
+        client.stop if client
+        logger.info 'Disconnected from SpaceBunny'
       end
 
       # Subscribe for messages coming from Live Stream with name 'name'

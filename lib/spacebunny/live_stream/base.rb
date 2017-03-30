@@ -24,13 +24,13 @@ module Spacebunny
         @secret = options[:secret] || raise(SecretRequired)
         @api_endpoint = options[:api_endpoint] || {}
 
-        extract_custom_connection_configs_from options
-        set_live_streams options[:live_streams]
-
         @raise_on_error = options[:raise_on_error]
         @log_to = options[:log_to] || STDOUT
-        @log_level = options[:log_level] || ::Logger::WARN
+        @log_level = options[:log_level] || ::Logger::ERROR
         @logger = options[:logger] || build_logger
+
+        extract_custom_connection_configs_from options
+        set_live_streams options[:live_streams]
       end
 
       def api_endpoint=(options)
@@ -157,6 +157,7 @@ module Spacebunny
         @custom_connection_configs[:vhost] = @custom_connection_configs.delete :vhost
         @custom_connection_configs[:client] = @custom_connection_configs.delete :client
         @custom_connection_configs[:secret] = @custom_connection_configs.delete :secret
+        @custom_connection_configs[:logger] = @custom_connection_configs.delete(:logger) || @logger
       end
 
       # @private
@@ -202,7 +203,7 @@ module Spacebunny
           when :error, ::Logger::ERROR, 'error' then ::Logger::ERROR
           when :fatal, ::Logger::FATAL, 'fatal' then ::Logger::FATAL
           else
-            Logger::WARN
+            Logger::ERROR
         end
       end
     end
