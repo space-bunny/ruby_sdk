@@ -26,18 +26,15 @@ module Spacebunny
         # Re-create client every time connect is called
         @client = Bunny.new(connection_params)
         @client.start
-      end
-
-      def channel_from_name(name)
-        # In @built_channels in fact we have exchanges
-        with_channel_check name do
-          @built_exchanges[name]
-        end
+        logger.info 'Connected to SpaceBunny'
       end
 
       def disconnect
         super
+        @built_exchanges = {}
+        @built_channels = {}
         client.stop if client
+        logger.info 'Disconnected from SpaceBunny'
       end
 
       def input_channel
