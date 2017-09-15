@@ -50,7 +50,7 @@ connection configurations and required parameters. Nothing remains but to connec
 dev.connect
 ```
 
-##### Publish
+#### Publish
 
 Ok, all set up! Let's publish some message:
 
@@ -86,7 +86,7 @@ You'll see the graph of the `temp` parameter being rendered. If you want to plot
 just use a comma as separator e.g: temp, pressure, voltage
 On the **Messages** tab you'll see raw messages' payloads received on this channel.
 
-##### Inbox
+#### Inbox
 
 Waiting for and reading messages from the device's Inbox is trivial:
 
@@ -102,7 +102,7 @@ end
 for instance:
 
 ```ruby
-dev.inbox(block: true, ack: :manual) do |message|
+dev.inbox(wait: true, ack: :manual) do |message|
   puts "Received: #{message.payload}"
   # Manually ack the message
   message.ack
@@ -126,7 +126,7 @@ endpoint, retrieving the connection configurations and required parameters. Noth
 live.connect
 ```
 
-##### Reading live messages
+#### Reading live messages
 
 Each LiveStream has its own cache that will keep always last 100 messages (FIFO, when there are more than 100 messages,
 the oldest ones get discarded). If you want to consume messages in a parallel way, you shoul use the cache and connect
