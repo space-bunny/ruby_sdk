@@ -12,7 +12,7 @@ monitor live streams and remotely control your devices. Easy to use, and ready t
 This is the source code repository for Ruby SDK.
 Please feel free to contribute!
 
-### Installation
+## Installation
 
 Add this line to your application's Gemfile:
 
@@ -34,7 +34,7 @@ and a super rapid setup.
 
 This SDK provides Device and LiveStream clients and currently supports the AMQP protocol.
 
-### Device - Basic usage
+## Device - Basic usage
 
 Pick a device, view its configurations and copy the Device Key. Instantiate a new `Spacebunny::Device` client,
 providing the Device Key:
@@ -50,7 +50,7 @@ connection configurations and required parameters. Nothing remains but to connec
 dev.connect
 ```
 
-#### Publish
+### Publish
 
 Ok, all set up! Let's publish some message:
 
@@ -86,7 +86,7 @@ You'll see the graph of the `temp` parameter being rendered. If you want to plot
 just use a comma as separator e.g: temp, pressure, voltage
 On the **Messages** tab you'll see raw messages' payloads received on this channel.
 
-#### Inbox
+### Inbox
 
 Waiting for and reading messages from the device's Inbox is trivial:
 
@@ -110,7 +110,7 @@ end
 ```
 This permits to handle errors or other critical situations
 
-### Live Stream - Basic usage
+## Live Stream - Basic usage
 
 For accessing a Live Stream a Live Stream Key's is required. On SpaceBunny's Web UI, go to the Streams section,
 click on "Live Stream Keys" and pick or create one.
@@ -126,7 +126,7 @@ endpoint, retrieving the connection configurations and required parameters. Noth
 live.connect
 ```
 
-#### Reading live messages
+### Reading live messages
 
 Each LiveStream has its own cache that will keep always last 100 messages (FIFO, when there are more than 100 messages,
 the oldest ones get discarded). If you want to consume messages in a parallel way, you shoul use the cache and connect
@@ -153,7 +153,7 @@ end
 
 Every client subscribed to the LiveStream in this way will receive a copy of the message.
 
-### TLS
+## TLS
 
 Instantiating a TLS-secured connection is trivial:
 
