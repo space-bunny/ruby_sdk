@@ -40,12 +40,19 @@ module Spacebunny
         @api_endpoint = options.deep_symbolize_keys
       end
 
+      # Retrieve configs from APIs endpoint
+      def auto_configs(force_reload = false)
+        if force_reload || !@auto_configs
+          @auto_configs = EndpointConnection.new(@api_endpoint.merge(key: @key, logger: logger)).configs
+        end
+        @auto_configs
+      end
+
       def connection_configs
         return @connection_configs if @connection_configs
         if auto_configure?
          # If key is specified, retrieve configs from APIs endpoint
-          @auto_configs = EndpointConnection.new(@api_endpoint.merge(key: @key, logger: logger)).configs
-          normalize_and_add_channels @auto_configs[:channels]
+          normalize_and_add_channels auto_configs[:channels]
           @auto_connection_configs = normalize_auto_connection_configs
         end
         # Build final connection_configs
@@ -220,13 +227,13 @@ module Spacebunny
       # Translate from auto configs given by APIs endpoint to a common format
       def normalize_auto_connection_configs
         {
-            host: @auto_configs[:connection][:host],
-            port: @auto_configs[:connection][:protocols][@protocol][:port],
-            tls_port: @auto_configs[:connection][:protocols][@protocol][:tls_port],
-            vhost: @auto_configs[:connection][:vhost],
-            device_id: @auto_configs[:connection][:device_id],
-            device_name: @auto_configs[:connection][:device_name],
-            secret: @auto_configs[:connection][:secret]
+            host: auto_configs[:connection][:host],
+            port: auto_configs[:connection][:protocols][@protocol][:port],
+            tls_port: auto_configs[:connection][:protocols][@protocol][:tls_port],
+            vhost: auto_configs[:connection][:vhost],
+            device_id: auto_configs[:connection][:device_id],
+            device_name: auto_configs[:connection][:device_name],
+            secret: auto_configs[:connection][:secret]
         }
       end
 
