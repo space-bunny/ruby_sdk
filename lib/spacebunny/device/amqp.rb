@@ -69,18 +69,24 @@ module Spacebunny
       alias_method :inbox, :on_receive
 
       def publish(channel_name, message, options = {})
-        check_client
-        channel_key = if options[:with_confirm]
-                        "#{channel_name}_confirm"
-                      else
-                        channel_name
-                      end.to_sym
+        if check_client
+          channel_key = if options[:with_confirm]
+                          "#{channel_name}_confirm"
+                        else
+                          channel_name
+                        end.to_sym
 
-        unless @built_exchanges[channel_key]
-          @built_exchanges[channel_key] = create_channel(channel_name, options)
+          unless @built_exchanges[channel_key]
+            @built_exchanges[channel_key] = create_channel(channel_name, options)
+          end
+          # Call Bunny "publish"
+          res = @built_exchanges[channel_key].publish message, channel_options(channel_name, options)
+          @logger.debug 'Message published'
+          res
+        else
+          @logger.debug 'Message NOT published due to client not connected'
+          false
         end
-        # Call Bunny publish method
-        @built_exchanges[channel_key].publish message, channel_options(channel_name, options)
       end
 
       def wait_for_publish_confirms
@@ -114,8 +120,10 @@ module Spacebunny
             raise ClientNotConnected
           else
             @logger.error 'Client not connected! Check internet connection'
+            return false
           end
         end
+        true
       end
 
       def create_channel(name, options = {})
