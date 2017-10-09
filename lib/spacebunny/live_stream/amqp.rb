@@ -50,7 +50,18 @@ module Spacebunny
       private
 
       def check_client
-        raise ClientNotConnected, 'Client not connected. Did you call client.connect?' unless client_connected?
+        unless client
+          raise ClientNotSetup
+        end
+        unless client.connected?
+          if raise_on_error
+            raise ClientNotConnected
+          else
+            @logger.error 'Client not connected! Check internet connection'
+            return false
+          end
+        end
+        true
       end
 
       def client_connected?
@@ -90,26 +101,31 @@ module Spacebunny
         to_ack, auto_ack = parse_ack options.fetch(:ack, :manual)
         from_cache = options.fetch :from_cache, false
 
-        check_client
-        ls_channel = client.create_channel
-        live_stream_name = "#{live_stream_data_from_name(name)[:id]}.live_stream"
-        if from_cache
-          live_stream = ls_channel.queue live_stream_name, DEFAULT_QUEUE_OPTIONS
-        else
-          ls_exchange = ls_channel.fanout live_stream_name, DEFAULT_EXCHANGE_OPTIONS
-          live_stream = ls_channel.queue("#{client}_#{Time.now.to_f}.live_stream.temp", auto_delete: true)
-                            .bind ls_exchange, routing_key: '#'
-        end
-
-        live_stream.subscribe(block: blocking, manual_ack: to_ack) do |delivery_info, metadata, payload|
-          message = LiveStream::Message.new ls_channel, options, delivery_info, metadata, payload
-
-          yield message
-
-          # If ack is :auto then ack current message
-          if to_ack && auto_ack
-            message.ack
+        if check_client
+          ls_channel = client.create_channel
+          live_stream_name = "#{live_stream_data_from_name(name)[:id]}.live_stream"
+          if from_cache
+            live_stream = ls_channel.queue live_stream_name, DEFAULT_QUEUE_OPTIONS
+          else
+            ls_exchange = ls_channel.fanout live_stream_name, DEFAULT_EXCHANGE_OPTIONS
+            live_stream = ls_channel.queue("#{client}_#{Time.now.to_f}.live_stream.temp", auto_delete: true)
+                              .bind ls_exchange, routing_key: '#'
           end
+
+          live_stream.subscribe(block: blocking, manual_ack: to_ack) do |delivery_info, metadata, payload|
+            message = LiveStream::Message.new ls_channel, options, delivery_info, metadata, payload
+
+            yield message
+
+            # If ack is :auto then ack current message
+            if to_ack && auto_ack
+              message.ack
+            end
+          end
+          return true
+        else
+          @logger.debug 'Not subscribed due to client not connected'
+          false
         end
       end
     end
