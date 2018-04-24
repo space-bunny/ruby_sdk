@@ -169,7 +169,6 @@ module Spacebunny
       # @private
       # Check for required params presence
       def check_connection_configs
-        puts @connection_configs.inspect
         raise DeviceIdMissing unless @connection_configs[:device_id]
       end
 
