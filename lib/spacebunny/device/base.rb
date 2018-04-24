@@ -29,7 +29,7 @@ module Spacebunny
         @log_level = options[:log_level] || ::Logger::ERROR
         @logger = options[:logger] || build_logger
 
-        extract_custom_connection_configs_from options
+        extract_and_normalize_custom_connection_configs_from options
         set_channels options[:channels]
       end
 
@@ -71,7 +71,7 @@ module Spacebunny
         unless options.is_a? Hash
           raise ArgumentError, 'connection_options must be an Hash. See doc for further info'
         end
-        extract_custom_connection_configs_from options.with_indifferent_access
+        extract_and_normalize_custom_connection_configs_from options.with_indifferent_access
       end
 
       def disconnect
@@ -169,6 +169,7 @@ module Spacebunny
       # @private
       # Check for required params presence
       def check_connection_configs
+        puts @connection_configs.inspect
         raise DeviceIdMissing unless @connection_configs[:device_id]
       end
 
@@ -194,19 +195,22 @@ module Spacebunny
 
       # @private
       # Copy options to custom_connection_configs and normalize some of the attributes overwriting it
-      def extract_custom_connection_configs_from(options)
+      def extract_and_normalize_custom_connection_configs_from(options)
         @custom_connection_configs = options
-        # Auto_recover from connection.close by default
-        @custom_connection_configs[:host] = @custom_connection_configs.delete :host
-        if @custom_connection_configs[:protocols] && custom_connection_configs[:protocols][@protocol]
-          @custom_connection_configs[:port] = @custom_connection_configs[:protocols][@protocol].delete :port
-          @custom_connection_configs[:tls_port] = @custom_connection_configs[:protocols][@protocol].delete :tls_port
-        end
-        @custom_connection_configs[:vhost] = @custom_connection_configs.delete :vhost
-        @custom_connection_configs[:device_id] = @custom_connection_configs.delete :device_id
-        @custom_connection_configs[:device_name] = @custom_connection_configs.delete :device_name
-        @custom_connection_configs[:secret] = @custom_connection_configs.delete :secret
+
         @custom_connection_configs[:logger] = @custom_connection_configs.delete(:logger) || @logger
+
+        if conn_options = @custom_connection_configs[:connection]
+          @custom_connection_configs[:host] = conn_options.delete :host
+          if conn_options[:protocols] && conn_options[:protocols][@protocol]
+            @custom_connection_configs[:port] = conn_options[:protocols][@protocol].delete :port
+            @custom_connection_configs[:tls_port] = conn_options[:protocols][@protocol].delete :tls_port
+          end
+          @custom_connection_configs[:vhost] = conn_options.delete :vhost
+          @custom_connection_configs[:device_id] = conn_options.delete :device_id
+          @custom_connection_configs[:device_name] = conn_options.delete :device_name
+          @custom_connection_configs[:secret] = conn_options.delete :secret
+        end
       end
 
       # @private
