@@ -1,4 +1,9 @@
-## Changes betwen 1.1.0 and 1.2.0
+## Changes between 1.5.1 and 2.0.0
+
+**This release uses the new SpaceBunny API and is incompatible with previous versions**
+
+
+## Changes between 1.1.0 and 1.2.0
 
 **This release includes minor breaking API changes**
 

@@ -9,14 +9,13 @@ module Spacebunny
         scheme: 'https',
         host: 'api.spacebunny.io',
         port: 443,
-        api_version: '/v1',
         configs_path: {
             device: '/device_configurations',
             live_stream: '/live_stream_key_configurations'
         }
     }.freeze
 
-    attr_accessor :scheme, :host, :port, :api_version, :configs_path
+    attr_accessor :scheme, :host, :port, :configs_path
     attr_reader :logger
 
     def initialize(options = {})
@@ -33,7 +32,6 @@ module Spacebunny
       @scheme = options[:scheme]
       @host = options[:host]
       @port = options[:port]
-      @api_version = options[:api_version]
       @configs_path = options[:configs_path]
       @logger = options.fetch :logger
     end
@@ -66,7 +64,7 @@ module Spacebunny
                         URI::HTTPS
                     end
 
-      unless uri = uri_builder.build(host: host, port: port, path: "#{api_version}#{configs_path}")
+      unless uri = uri_builder.build(host: host, port: port, path: "#{configs_path}")
         raise SchemeNotValid.new(scheme)
       end
 
