@@ -20,7 +20,10 @@ module Spacebunny
         connection_params = connection_configs.dup
         connection_params[:user] = connection_params.delete :device_id
         connection_params[:password] = connection_params.delete :secret
-        connection_params[:port] = connection_params.delete(:tls_port) if connection_params[:tls]
+        # Default on a tls connection
+        unless connection_params[:tls] == false
+          connection_params[:port] = connection_params.delete(:tls_port)
+        end
         connection_params[:log_level] = connection_params.delete(:log_level) || ::Logger::ERROR
 
         # Re-create client every time connect is called

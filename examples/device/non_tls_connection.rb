@@ -13,9 +13,9 @@ device_key = 'your_awesome_device_key'
 
 # Let's instantiate a Space Bunny client, providing the device's API key, that's the fastest and simplest method
 # to create a new client.
-# Provide `tls: true` to use instantiate a tls-secured connection
+# Provide `tls: false` to instantiate a NON-tls secured connection
 
-dev = Spacebunny::Device.new device_key, tls: true
+dev = Spacebunny::Device.new device_key, tls: false
 
 # An equivalent method for providing the API key is through options: Spacebunny::Device.new(key: key)
 

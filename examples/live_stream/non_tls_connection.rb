@@ -12,9 +12,9 @@ client = 'live_stream_key_client'
 secret = 'live_stream_key_secret'
 
 # Instantiate a Spacebunny::LiveStream (AMQP by default) client, providing the 'client' and 'secret' options.
-# Also provide  tls: true to  establish a tls-encrypted connection
+# Also provide  tls: true to  establish a NON tls-encrypted connection
 
-live = Spacebunny::LiveStream.new client: client, secret: secret, tls: true
+live = Spacebunny::LiveStream.new client: client, secret: secret, tls: false
 live.connect
 
 live.message_from_cache :live_data, ack: :auto, wait: true do |message|
