@@ -10,4 +10,4 @@
 
 .idea
 *.orig
-private_examples/
+/private_examples/

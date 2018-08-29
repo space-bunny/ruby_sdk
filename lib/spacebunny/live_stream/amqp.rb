@@ -103,7 +103,7 @@ module Spacebunny
 
         if check_client
           ls_channel = client.create_channel
-          live_stream_name = "#{live_stream_data_from_name(name)[:id]}.live_stream"
+          live_stream_name = "#{name}.live_stream"
           if from_cache
             live_stream = ls_channel.queue live_stream_name, DEFAULT_QUEUE_OPTIONS
           else
