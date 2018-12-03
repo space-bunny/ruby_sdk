@@ -1,65 +1,47 @@
 module Spacebunny
-  class DeviceKeyOrClientAndSecretRequired < Exception
+  class DeviceKeyOrClientAndSecretRequired < ArgumentError
     def initialize(message = nil)
       message = message || "A valid 'Api Key' or valid 'Client' and 'Secret' are required for auto-configuration"
       super(message)
     end
   end
 
-  class DeviceKeyOrConfigurationsRequired < Exception
-    def initialize(message = nil)
-      message = message || 'Neither key or connection options provided!'
-      super(message)
-    end
-  end
-
-  class AckTypeError < Exception
+  class AckTypeError < ArgumentError
     def initialize(message = nil)
       message = message || "Ack type not valid. Use one of #{Spacebunny::AmqpClient::ACK_TYPES.map{ |t| ":#{t}" }.join(', ')}"
       super(message)
     end
   end
 
-  class BlockRequired < Exception
+  class BlockRequired < ArgumentError
     def initialize(message = nil)
       message = message || 'block missing. Please provide a block'
       super(message)
     end
   end
 
-  class ChannelsMustBeAnArray < Exception
+  class ChannelsMustBeAnArray < StandardError
     def initialize
       message = "channels option must be an Array. E.g. [:data, :alarms]"
       super(message)
     end
   end
 
-  class ChannelNotExists < Exception
-    def initialize(channel = nil)
-      message = if channel
-                  "Channel '#{channel}' does not exists. Is this channel enabled for the device or did you specified it on client initialization?"
-                else
-                  'Channel does not exists'
-                end
-      super(message)
-    end
-  end
-
-  class ClientRequired < Exception
+  class ClientRequired < ArgumentError
     def initialize(message = nil)
       message = message || "Missing mandatory 'client'. Spacebunny::LiveStream.new(:client => 'a_valid_client', :secret: 'a_valid_secret')"
       super(message)
     end
   end
 
-  class LiveStreamFormatError < Exception
+  class LiveStreamFormatError < StandardError
     def initialize
       message = "Live Stream not correctly formatted. It must be an Hash with at least 'name' and 'id' attributes"
       super(message)
     end
   end
 
-  class LiveStreamNotFound < Exception
+  class LiveStreamNotFound < StandardError
     def initialize(name = nil)
       message = if name
                   "Live Stream '#{name}' not found. Did you created and configured it?"
@@ -70,7 +52,7 @@ module Spacebunny
     end
   end
 
-  class LiveStreamParamError < Exception
+  class LiveStreamParamError < StandardError
     def initialize(live_stream_name, param_name)
       live_stream_name = live_stream_name || 'no-name-provided'
       "Live Stream '#{live_stream_name}' misses mandatory '#{param_name}' param"
@@ -78,63 +60,56 @@ module Spacebunny
     end
   end
 
-  class SecretRequired < Exception
+  class SecretRequired < ArgumentError
     def initialize(message = nil)
       message = message || "Missing mandatory 'secret' Spacebunny::LiveStream.new(:client => 'a_valid_client', :secret: 'a_valid_secret')"
       super(message)
     end
   end
 
-  class ClientNotConnected < Exception
+  class ClientNotConnected < StandardError
     def initialize(message = nil)
       message = message || 'Client not connected! Check internet connection'
       super(message)
     end
   end
 
-  class ClientNotSetup < Exception
+  class ClientNotSetup < StandardError
     def initialize(message = nil)
       message = message || "'Client not setup. Did you call 'connect'?'"
       super(message)
     end
   end
 
-  class DeviceIdMissing < Exception
+  class DeviceIdMissing < ArgumentError
     def initialize(message = nil)
       message = message || "missing mandatory 'device_id' parameter. Please provide it on client initialization (see doc) or use auto-configuration"
       super(message)
     end
   end
 
-  class EndpointError < Exception
+  class EndpointError < StandardError
     def initialize(message = nil)
       message = message || 'Error while contacting endpoint for auto-configuration'
       super(message)
     end
   end
 
-  class EndPointNotReachable < Exception
+  class EndPointNotReachable < StandardError
     def initialize(message = nil)
       message = message || 'Endpoint not reachable'
       super(message)
     end
   end
 
-  class ProtocolNotRegistered < Exception
-    def initialize(protocol)
-      message = "protocol #{protocol} is not registered"
-      super(message)
-    end
-  end
-
-  class SchemeNotValid < Exception
+  class SchemeNotValid < ArgumentError
     def initialize(scheme)
       message = "Provided scheme #{scheme} is not valid"
       super(message)
     end
   end
 
-  class StreamsMustBeAnArray < Exception
+  class StreamsMustBeAnArray < StandardError
     def initialize
       message = "streams option must be an Array"
       super(message)
