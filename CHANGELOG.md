@@ -1,3 +1,9 @@
+## Changes between 4.1.1 and 4.2.0
+
+#### Required Ruby Version >= 2.7.0
+#### Upgrade httprb dependency to version ~> 5.1.0
+#### Upgrade Bunny dependency to version ~> 2.19.0
+
 ## Changes between 1.5.1 and 2.0.0
 
 **This release uses the new SpaceBunny API and is incompatible with previous versions**
