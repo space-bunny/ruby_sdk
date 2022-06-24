@@ -17,11 +17,11 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
-  spec.required_ruby_version = '>= 1.9.3'
-  spec.add_runtime_dependency 'http', '~> 2.0.3'
-  spec.add_runtime_dependency 'bunny', '~> 2.12.0'
+  spec.required_ruby_version = '>= 2.7.0'
+  spec.add_runtime_dependency 'http', '~> 5.1.0'
+  spec.add_runtime_dependency 'bunny', '~> 2.19.0'
 
-  spec.add_development_dependency 'bundler', '~> 1.10'
+  spec.add_development_dependency 'bundler', '>= 1.10'
   spec.add_development_dependency 'rake', '>= 12.3.3'
   spec.add_development_dependency 'rspec', '~> 3.3'
 end

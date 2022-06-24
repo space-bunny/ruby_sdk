@@ -11,3 +11,4 @@
 .idea
 *.orig
 /private_examples/
+.ruby-version
